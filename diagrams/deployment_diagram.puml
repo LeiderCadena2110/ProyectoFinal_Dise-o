@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+
+title Diagrama de Despliegue - Car Rental System
+
+node "Client Tier" {
+  node "Web Browser" as browser
+  node "Mobile Device" as mobile
+  node "CLI Terminal" as cli
+}
+
+node "Load Balancer" as lb
+
+node "Application Server" as app_server {
+  artifact "car_rental_system.war" as app {
+    package "Presentation" as ui
+    package "Business Logic" as logic
+    package "Data Access" as dao
+  }
+}
+
+node "Database Server" as db_server {
+  artifact "Database Instance" as db
+  database "Car Rental DB" as database
+}
+
+node "External Services" as external {
+  node "Payment Gateway Server" as payment
+  node "Mail Server" as mail
+  node "SMS Gateway" as sms
+}
+
+browser --> lb : HTTPS
+mobile --> lb : HTTPS
+cli --> lb : SSH
+
+lb --> app_server : HTTP/REST
+
+app_server --> db_server : JDBC/SQL
+db --> database : Read/Write
+
+app_server --> payment : Payment API
+app_server --> mail : SMTP
+app_server --> sms : SMS API
+
+@enduml

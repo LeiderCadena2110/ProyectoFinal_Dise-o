@@ -1,0 +1,63 @@
+@startuml
+!theme plain
+
+title Diagrama de Paquetes / Desarrollo - Car Rental System
+
+package "car_rental_system" as root {
+  package "models" as models {
+    class Address
+    class Person
+    class Account
+    class Member
+    class Receptionist
+    class AdditionalDriver
+    class Vehicle
+    class Car
+    class Van
+    class Truck
+    class SUV
+    class Motorcycle
+  }
+
+  package "enums" as enums {
+    enum BillItemType
+    enum VehicleLogType
+    enum VehicleStatus
+    enum ReservationStatus
+    enum AccountStatus
+    enum PaymentStatus
+    enum CarType
+    enum VanType
+  }
+
+  package "services" as services {
+    class CarRentalSystem
+    class VehicleInventory
+    class VehicleReservation
+  }
+
+  package "business" as business {
+    class Bill
+    class BillItem
+    class Equipment
+    class Service
+    class RentalInsurance
+    class Notification
+    class VehicleLog
+  }
+
+  package "ui" as ui {
+    class main
+  }
+}
+
+enums --> models : <<import>>
+services --> models : <<import>>
+services --> enums : <<import>>
+business --> models : <<import>>
+business --> enums : <<import>>
+ui --> services : <<import>>
+ui --> business : <<import>>
+ui --> models : <<import>>
+
+@enduml

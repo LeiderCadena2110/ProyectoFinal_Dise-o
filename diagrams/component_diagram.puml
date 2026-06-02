@@ -1,0 +1,63 @@
+@startuml
+!theme plain
+
+title Diagrama de Componentes - Car Rental System
+
+package "Presentation Layer" {
+  [Web Interface]
+  [CLI Interface]
+  [REST API]
+}
+
+package "Business Logic Layer" {
+  [CarRentalSystem]
+  [Reservation Manager]
+  [Vehicle Manager]
+  [Member Manager]
+  [Billing Manager]
+  [Notification Manager]
+  [Inventory Manager]
+}
+
+package "Data Access Layer" {
+  [Vehicle Repository]
+  [Member Repository]
+  [Reservation Repository]
+  [Bill Repository]
+  [Log Repository]
+}
+
+package "External Systems" {
+  [Payment Gateway]
+  [Email Service]
+  [SMS Service]
+  [Barcode Scanner]
+}
+
+' Presentation to Business
+[Web Interface] --> [CarRentalSystem] : HTTP/REST
+[CLI Interface] --> [CarRentalSystem] : Direct Call
+[REST API] --> [CarRentalSystem] : HTTP
+
+' Business internal
+[CarRentalSystem] --> [Reservation Manager]
+[CarRentalSystem] --> [Vehicle Manager]
+[CarRentalSystem] --> [Member Manager]
+[CarRentalSystem] --> [Billing Manager]
+[CarRentalSystem] --> [Notification Manager]
+[CarRentalSystem] --> [Inventory Manager]
+
+' Business to Data
+[Reservation Manager] --> [Reservation Repository]
+[Vehicle Manager] --> [Vehicle Repository]
+[Member Manager] --> [Member Repository]
+[Billing Manager] --> [Bill Repository]
+[Vehicle Manager] --> [Log Repository]
+
+' Business to External
+[Billing Manager] --> [Payment Gateway] : Payment Processing
+[Notification Manager] --> [Email Service] : Email Notifications
+[Notification Manager] --> [SMS Service] : SMS Alerts
+[Vehicle Manager] --> [Barcode Scanner] : Barcode Reading
+
+@enduml

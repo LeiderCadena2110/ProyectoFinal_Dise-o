@@ -331,13 +331,217 @@ flowchart TD
     Handle --> Stop
 ```
 
+## Component Diagram
+
+```mermaid
+graph TB
+    subgraph Presentation_Layer["Presentation Layer"]
+        Web[Web Interface]
+        CLI[CLI Interface]
+        API[REST API]
+    end
+
+    subgraph Business_Layer["Business Logic Layer"]
+        CRS[CarRentalSystem]
+        RM[Reservation Manager]
+        VM[Vehicle Manager]
+        MM[Member Manager]
+        BM[Billing Manager]
+        NM[Notification Manager]
+        IM[Inventory Manager]
+    end
+
+    subgraph Data_Layer["Data Access Layer"]
+        VR[Vehicle Repository]
+        MR[Member Repository]
+        RR[Reservation Repository]
+        BR[Bill Repository]
+        LR[Log Repository]
+    end
+
+    subgraph External["External Systems"]
+        PG[Payment Gateway]
+        ES[Email Service]
+        SMS[SMS Service]
+        BS[Barcode Scanner]
+    end
+
+    Web --> CRS
+    CLI --> CRS
+    API --> CRS
+
+    CRS --> RM
+    CRS --> VM
+    CRS --> MM
+    CRS --> BM
+    CRS --> NM
+    CRS --> IM
+
+    RM --> RR
+    VM --> VR
+    MM --> MR
+    BM --> BR
+    VM --> LR
+
+    BM --> PG
+    NM --> ES
+    NM --> SMS
+    VM --> BS
+```
+
+## Context Diagram
+
+```mermaid
+graph TB
+    subgraph System[Car Rental System]
+        Core[CarRentalSystem]
+    end
+
+    Member((Member))
+    Receptionist((Receptionist))
+    Worker((Worker))
+    Admin((System Admin))
+
+    PG[Payment Gateway]
+    ES[Email Service]
+    SMS[SMS Service]
+    BS[Barcode Scanner]
+    DB[(Database)]
+
+    Member -->|Search, Reserve, Pick-up, Return| System
+    Receptionist -->|Manage vehicles, Register members| System
+    Worker -->|Inspect returns, Update logs| System
+    Admin -->|Configure system, Manage accounts| System
+
+    System -->|Process payments| PG
+    System -->|Send email notifications| ES
+    System -->|Send SMS alerts| SMS
+    System -->|Read vehicle barcodes| BS
+    System -->|Persist all data| DB
+    DB -->|Retrieve data| System
+```
+
+## Package / Development Diagram
+
+```mermaid
+graph TB
+    subgraph car_rental_system["car_rental_system"]
+        subgraph models["models"]
+            Address
+            Person
+            Account
+            Member
+            Receptionist
+            AdditionalDriver
+            Vehicle
+            Car
+            Van
+            Truck
+            SUV
+            Motorcycle
+        end
+
+        subgraph enums["enums"]
+            BillItemType
+            VehicleLogType
+            VehicleStatus
+            ReservationStatus
+            AccountStatus
+            PaymentStatus
+            CarType
+            VanType
+        end
+
+        subgraph services["services"]
+            CarRentalSystem
+            VehicleInventory
+            VehicleReservation
+        end
+
+        subgraph business["business"]
+            Bill
+            BillItem
+            Equipment
+            Service
+            RentalInsurance
+            Notification
+            VehicleLog
+        end
+
+        subgraph ui["ui"]
+            main
+        end
+    end
+
+    enums -.->|import| models
+    services -.->|import| models
+    services -.->|import| enums
+    business -.->|import| models
+    business -.->|import| enums
+    ui -.->|import| services
+    ui -.->|import| business
+    ui -.->|import| models
+```
+
+## Deployment Diagram
+
+```mermaid
+graph TB
+    subgraph Client_Tier["Client Tier"]
+        Browser[Web Browser]
+        Mobile[Mobile Device]
+        CLI[CLI Terminal]
+    end
+
+    LB[Load Balancer]
+
+    subgraph App_Server["Application Server"]
+        subgraph App["car_rental_system.war"]
+            UI[Presentation]
+            Logic[Business Logic]
+            DA[Data Access]
+        end
+    end
+
+    subgraph DB_Server["Database Server"]
+        DBInstance[Database Instance]
+        Database[(Car Rental DB)]
+    end
+
+    subgraph External_Services["External Services"]
+        PG[Payment Gateway Server]
+        Mail[Mail Server]
+        SMS[SMS Gateway]
+    end
+
+    Browser -->|HTTPS| LB
+    Mobile -->|HTTPS| LB
+    CLI -->|SSH| LB
+    LB -->|HTTP/REST| App_Server
+    App_Server -->|JDBC/SQL| DB_Server
+    DBInstance --> Database
+    App_Server -->|Payment API| PG
+    App_Server -->|SMTP| Mail
+    App_Server -->|SMS API| SMS
+```
+
 ## Archivos PlantUML
 
 Los diagramas en formato PlantUML estan disponibles en la carpeta `diagrams/`:
 
-- `diagrams/use_case_diagram.puml`
-- `diagrams/class_diagram.puml`
-- `diagrams/activity_pickup.puml`
-- `diagrams/activity_return.puml`
+| Diagrama | Archivo |
+|----------|---------|
+| Use Case | `diagrams/use_case_diagram.puml` |
+| Class | `diagrams/class_diagram.puml` |
+| Activity - Pick Up | `diagrams/activity_pickup.puml` |
+| Activity - Return | `diagrams/activity_return.puml` |
+| **Component** | `diagrams/component_diagram.puml` |
+| **Context** | `diagrams/context_diagram.puml` |
+| **Development/Package** | `diagrams/development_diagram.puml` |
+| **Deployment** | `diagrams/deployment_diagram.puml` |
 
 Puedes renderizarlos con [PlantUML](https://plantuml.com/) o con extensiones de VS Code como `PlantUML Preview`.
+
+---
+
+> **Nota:** No puedo procesar archivos de imagen directamente. Los diagramas han sido creados en formato **PlantUML** (`.puml`) y **Mermaid.js** (en este archivo), los cuales se renderizan automáticamente en GitHub y en editores con soporte para estos formatos.

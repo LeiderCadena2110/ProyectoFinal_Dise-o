@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+
+title Diagrama de Contexto - Car Rental System
+
+rectangle "Car Rental System" as system {
+  rectangle "CarRentalSystem" as core
+}
+
+actor "Member" as member
+actor "Receptionist" as receptionist
+actor "Worker" as worker
+actor "System Admin" as admin
+
+rectangle "Payment Gateway" as payment
+rectangle "Email Service" as email
+rectangle "SMS Service" as sms
+rectangle "Barcode Scanner" as barcode
+rectangle "Database" as database
+
+member --> system : "Search, Reserve, Pick-up, Return"
+receptionist --> system : "Manage vehicles, Register members"
+worker --> system : "Inspect returns, Update logs"
+admin --> system : "Configure system, Manage accounts"
+
+system --> payment : "Process payments"
+system --> email : "Send email notifications"
+system --> sms : "Send SMS alerts"
+system --> barcode : "Read vehicle barcodes"
+system --> database : "Persist all data"
+
+database --> system : "Retrieve data"
+
+@enduml
