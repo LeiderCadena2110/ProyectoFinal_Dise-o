@@ -67,6 +67,15 @@ Las clases principales del sistema son:
 7. **Buscar miembro** - Búsqueda de miembros por recepcionista
 8. **Notificaciones** - Envío de recordatorios
 
+## Diagramas
+
+Los diagramas del sistema estan disponibles en `DIAGRAMS.md` y en la carpeta `diagrams/` en formato PlantUML:
+
+- **Diagrama de Casos de Uso** - Actores y sus interacciones con el sistema
+- **Diagrama de Clases** - Estructura completa de clases y relaciones
+- **Diagrama de Actividad (Recoger vehículo)** - Flujo de recogida de un vehículo
+- **Diagrama de Actividad (Devolver vehículo)** - Flujo de devolución con cálculo de multas
+
 ## Requisitos
 
 - Python 3.8+
@@ -74,11 +83,5 @@ Las clases principales del sistema son:
 ## Ejecución
 
 ```bash
-python -m car_rental_system.main
-```
-
-O desde el directorio raíz:
-
-```bash
-python -m main
+python run.py
 ```

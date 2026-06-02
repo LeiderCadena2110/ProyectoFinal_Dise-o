@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+start
+:Member returns vehicle to rental location;
+:Worker inspects vehicle condition;
+:Worker updates vehicle log;
+
+note right
+  Log types: accident,
+  fueling, cleaning,
+  repair, etc.
+end note
+
+:Worker records mileage and fuel level;
+:System calculates rental period;
+
+if (Return date > Due date) then (Late)
+  :System calculates late fee;
+  :System adds late fee charge to bill;
+else (On time)
+endif
+
+:System calculates base charges;
+:System adds equipment / service / insurance charges;
+:System generates final bill;
+:Member reviews bill;
+
+if (Member accepts bill) then (Yes)
+  :Member makes payment;
+  :Payment status set to COMPLETED;
+  :Vehicle status set to AVAILABLE;
+  :Reservation status set to COMPLETED;
+  :System sends return confirmation;
+  stop
+else (No)
+  :Payment status set to PENDING;
+  :System escalates to receptionist;
+  :Receptionist handles dispute;
+  stop
+endif
+
+@enduml

@@ -1,0 +1,203 @@
+@startuml
+!theme plain
+
+abstract class Account {
+  - id: str
+  - password: str
+  - status: AccountStatus
+  - person: Person
+  + reset_password()
+}
+
+class Member {
+  - total_vehicles_reserved: int
+  - reservations: list
+  + get_reservations()
+}
+
+class Receptionist {
+  - date_joined: datetime
+  + search_member(name)
+}
+
+class AdditionalDriver {
+  - driver_id: str
+  - person: Person
+}
+
+class Person {
+  - name: str
+  - address: Address
+  - email: str
+  - phone: str
+}
+
+class Address {
+  - street_address: str
+  - city: str
+  - state: str
+  - zip_code: str
+  - country: str
+}
+
+abstract class Vehicle {
+  - license_number: str
+  - stock_number: str
+  - passenger_capacity: int
+  - barcode: str
+  - has_sunroof: bool
+  - status: VehicleStatus
+  - model: str
+  - make: str
+  - manufacturing_year: int
+  - mileage: int
+  - log: list
+  + reserve_vehicle()
+  + return_vehicle()
+}
+
+class Car {
+  - type: CarType
+}
+
+class Van {
+  - type: VanType
+}
+
+class Truck
+class SUV
+class Motorcycle
+
+class VehicleLog {
+  - id: int
+  - type: VehicleLogType
+  - description: str
+  - creation_date: datetime
+  + update()
+}
+
+class VehicleInventory {
+  - vehicle_types: dict
+  - vehicle_models: dict
+  - all_vehicles: list
+  + add_vehicle()
+  + remove_vehicle()
+  + search_by_type()
+  + search_by_model()
+  + search_by_make()
+  + get_available_vehicles()
+}
+
+interface Search {
+  + search_by_type()
+  + search_by_model()
+  + search_by_make()
+}
+
+class VehicleReservation {
+  - reservation_number: str
+  - creation_date: datetime
+  - status: ReservationStatus
+  - due_date: datetime
+  - return_date: datetime
+  - pickup_date: datetime
+  - customer: Member
+  - vehicle: Vehicle
+  - bill: Bill
+  + cancel()
+  + complete_reservation()
+}
+
+class CarRentalLocation {
+  - name: str
+  - location: Address
+}
+
+class CarRentalSystem {
+  - name: str
+  - locations: list
+  - members: list
+  - inventory: VehicleInventory
+  - reservations: list
+  + register_member()
+  + reserve_vehicle()
+  + check_out_vehicle()
+  + return_vehicle()
+}
+
+class Notification {
+  - id: int
+  - content: str
+  - recipient: Person
+  - sent_date: datetime
+  + mark_as_read()
+}
+
+class Bill {
+  - id: str
+  - items: list
+  - total_amount: float
+  - payment_status: PaymentStatus
+  + add_item()
+}
+
+class BillItem {
+  - id: str
+  - description: str
+  - amount: float
+  - type: BillItemType
+}
+
+class Equipment {
+  - id: str
+  - name: str
+  - description: str
+  - daily_cost: float
+}
+
+class Service {
+  - id: str
+  - name: str
+  - description: str
+  - cost: float
+}
+
+class RentalInsurance {
+  - id: str
+  - name: str
+  - description: str
+  - daily_cost: float
+  - coverage_details: str
+}
+
+' Relationships
+Account <|-- Member
+Account <|-- Receptionist
+Account --> Person
+Person --> Address
+
+Vehicle <|-- Car
+Vehicle <|-- Van
+Vehicle <|-- Truck
+Vehicle <|-- SUV
+Vehicle <|-- Motorcycle
+Vehicle --> VehicleLog
+VehicleInventory --|> Search
+
+VehicleReservation --> Member
+VehicleReservation --> Vehicle
+VehicleReservation --> Bill
+VehicleReservation --> AdditionalDriver
+VehicleReservation --> Notification
+VehicleReservation --> Equipment
+VehicleReservation --> Service
+VehicleReservation --> RentalInsurance
+
+CarRentalSystem --> CarRentalLocation
+CarRentalSystem --> Member
+CarRentalSystem --> VehicleInventory
+CarRentalSystem --> VehicleReservation
+
+Bill --> BillItem
+
+@enduml

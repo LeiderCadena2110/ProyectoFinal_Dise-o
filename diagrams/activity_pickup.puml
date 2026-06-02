@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+start
+:Member searches for available vehicles;
+:Member selects a vehicle;
+:Member creates reservation;
+:Member adds equipment / services / insurance;
+
+if (System verifies vehicle availability) then (Available)
+  :System confirms reservation;
+  :Vehicle status set to RESERVED;
+  :System sends confirmation notification;
+  :Member arrives at rental location;
+  :Member presents reservation details;
+  :Receptionist verifies reservation;
+  :System generates check-out form;
+  :Member signs rental agreement;
+  :Member receives vehicle keys;
+  :Vehicle status set to LOANED;
+  :Reservation status set to CONFIRMED;
+  :System sends pick-up notification;
+  stop
+else (Not Available)
+  :System rejects reservation;
+  :System suggests alternative vehicles;
+  if (Member chooses alternative) then (Yes)
+    :Member selects new vehicle;
+    (Member creates reservation) -->>
+  else (No)
+    :Reservation cancelled;
+    stop
+  endif
+endif
+
+@enduml
